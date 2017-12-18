@@ -1,34 +1,45 @@
 package com.epiklp.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.epiklp.game.actors.characters.Enemy;
+import com.epiklp.game.actors.characters.FlameDemon;
+import com.epiklp.game.actors.GameObject;
+import com.epiklp.game.actors.characters.Hero;
 
-import box2dLight.RayHandler;
+import java.util.Iterator;
 
-class GameScreen implements Screen, Interface {
+/**
+ * Created by epiklp on 27.11.17.
+ * <p>
+ * Stage dla controllera
+ */
+
+class GameScreen implements Screen {
     final Cave cave;
+
+    private boolean PAUSE;
+
+
+    private Stage stage;
 
     private OrthographicCamera camera;
     private Controller controller;
@@ -36,184 +47,179 @@ class GameScreen implements Screen, Interface {
 
     //physic world 2D
     private Box2DDebugRenderer b2dr;
-    private World world;
-    private Body player, mapgame;
+
     private float horizontalForce = 0;
 
     //texture && sprite && font && map
-    private SpriteBatch batch;
-    private Sprite playerText;
     private UI ui;
     private OrthogonalTiledMapRenderer tmr;
     private TiledMap map;
-
+    private Viewport viewport;
     //hero
     private Hero hero;
-    private Array<Body> bodies;
+    private GameObject enemy;
+    private Array<Enemy> enemies;
+    private Array<Body> mapBodies;
 
-    private RayHandler rayHandler;
+    private MyContactListener myContactListener;
+    private pauseMenu MenuPause;
 
     public GameScreen(Cave cave) {
+        PAUSE = false;
         this.cave = cave;
-
-        camera = new OrthographicCamera(width/PPM/SCALE, height/PPM/SCALE);
-        hero = new Hero();
-
-        //	textureGame = new TextureGame();
+        TheBox.initWorld();
+        camera = new OrthographicCamera(Cave.WIDTH, Cave.HEIGHT);
+        viewport = new ExtendViewport(Cave.WIDTH / 1.5f , Cave.HEIGHT / 1.5f, camera);
+        stage = new Stage(viewport);
+        myContactListener = new MyContactListener();
         controller = new Controller();
+        Gdx.input.setInputProcessor(new InputMultiplexer());
         ui = new UI();
 
-        world = new World(new Vector2(0,-10),true);
-
         b2dr = new Box2DDebugRenderer();
-        //rayHandler = new RayHandler(world);
 
-
-
-        player = CreateBox(400, 300,28f , 48, false);
-        batch = new SpriteBatch();
-        playerText = new Sprite(new Texture("character/1.png"));
-
+        enemy = new FlameDemon();
+        stage.addActor(enemy);
+        hero = new Hero();
+        stage.addActor(hero);
         map = new TmxMapLoader().load("Map/map.tmx");
-        tmr = new OrthogonalTiledMapRenderer(map, 0.062f);
+        tmr = new OrthogonalTiledMapRenderer(map, 2f);
 
-        bodies = TiledObject.parseTiledObjectLayer(world, map.getLayers().get("collision").getObjects());
+        mapBodies = TiledObject.parseTiledObjectLayer(TheBox.world, map.getLayers().get("collision").getObjects());
+        MenuPause = new pauseMenu();
 
-        rayHandler = new RayHandler(world);
-
+        InputMultiplexer inputMultiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
+        inputMultiplexer.addProcessor(MenuPause);
+        inputMultiplexer.addProcessor(controller);
     }
+
 
     @Override
     public void show() {
 
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        update(Gdx.graphics.getDeltaTime());
-        world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                hero.setGround(true);
-            }
+    public void update(float delta) {
+        TheBox.world.step(1 / 60f, 6, 2);
 
-            @Override
-            public void endContact(Contact contact) {
-                hero.setGround(false);
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-
-            }
-        });
-        //textureGame.draw();
-        tmr.render();
-        batch.begin();
-        batch.draw(playerText,player.getPosition().x-0.8f, player.getPosition().y - 1.5f, 108/SCALE/PPM, 192/SCALE/PPM);
-        batch.end();
-        b2dr.render(world, camera.combined.scl(PPM));
-        controller.draw();
-        ui.draw(hero.getLive(), hero.getMagic(), player.getPosition().x, player.getPosition().y);
-    }
-    public void update(float delta)
-    {
-        world.step(1/60f, 6, 2);
+        TheBox.rayHandler.update();
         inputUpdate();
         cameraUpdate();
         tmr.setView(camera);
-        batch.setProjectionMatrix(camera.combined);
+        stage.getViewport().setCamera(camera);
+        TheBox.rayHandler.setCombinedMatrix(camera.combined.scl(Cave.PPM));
+        ui.update(hero.getLife(), hero.getMagic());
+
+        sweepDeadBodies();
     }
+
+    @Override
+    public void render(float delta) {
+        if(PAUSE == false) {
+            update(Gdx.graphics.getDeltaTime());
+            TheBox.world.setContactListener(myContactListener);
+            checkEndGame();
+            tmr.render();
+            stage.act();
+            stage.draw();
+            TheBox.rayHandler.render();
+            controller.draw();
+            ui.draw();
+            b2dr.render(TheBox.world, camera.combined.scl(Cave.PPM));
+
+        }
+        else{
+            MenuPause.draw();
+            updateMenu(Gdx.graphics.getDeltaTime());
+        }
+    }
+
+    public void updateMenu(float delta)
+    {
+        if(MenuPause.presssResume)
+        {
+            resume();
+        }
+        if(MenuPause.pressRestart)
+        {
+            dispose();
+            cave.setScreen(new GameScreen(cave));
+        }
+        if(MenuPause.pressExit)
+        {
+            dispose();
+            Gdx.app.exit();
+        }
+    }
+
+    private void checkEndGame() {
+        if (hero.isDead()) {
+            cave.setScreen(new EndScreen(cave));
+        }
+    }
+
 
     private void cameraUpdate() {
-        Vector3 poition = camera.position;
-        poition.x = player.getPosition().x;
-        poition.y = player.getPosition().y;//height/PPM/4;
-        camera.position.set(poition);
+        Vector3 position = camera.position;
+        position.x = hero.getBody().getPosition().x * Cave.PPM;
+        position.y = hero.getBody().getPosition().y * Cave.PPM;//HEIGHT/PPM/4;
+        camera.position.set(position);
         camera.update();
-    }
-
-    private Body CreateBox(int x, int y, float width, float height, boolean isStatic) {
-        Body pBody;
-        BodyDef def = new BodyDef();
-        if(isStatic) def.type = BodyDef.BodyType.StaticBody;
-        else def.type = BodyDef.BodyType.DynamicBody;
-        def.position.set(x/PPM, y/PPM);
-        def.fixedRotation = true;
-        pBody = world.createBody(def);
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width/PPM,height/PPM);
-
-        pBody.createFixture(shape,1).setUserData("player");
-        shape.dispose();
-        return pBody;
     }
 
 
     private void inputUpdate() {
 
-        if(Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched()) {
             if (controller.isLeftPressed()) {
-                playerText.setFlip(true, false);
-                if (horizontalForce > -(hero.getspeedWalk()))
+                hero.getSprite().setFlip(true, false);
+                hero.setTurn(false);
+                if (horizontalForce > -(hero.getSpeedWalk()))
                     horizontalForce -= 0.4f;
             } else if (controller.isRightPressed()) {
-                playerText.setFlip(false, false);
-                if (horizontalForce < (hero.getspeedWalk()))
+                hero.getSprite().setFlip(false, false);
+                hero.setTurn(true);
+                if (horizontalForce < (hero.getSpeedWalk()))
                     horizontalForce += 0.4f;
             }
-        }
-        else
-        {
-            if(horizontalForce > 0.1)
-            {
+        } else {
+            if (horizontalForce > 0.1) {
                 horizontalForce -= 0.2f;
-            }
-            else
-            if(horizontalForce < -0.1)
-            {
+            } else if (horizontalForce < -0.1) {
                 horizontalForce += 0.2f;
-            }
-            else
-            {
+            } else {
                 horizontalForce = 0;
             }
         }
-
-        player.setLinearVelocity(horizontalForce, player.getLinearVelocity().y);
-
-        if (controller.isUpPressed() && hero.getGround())
-        {
-            player.setLinearVelocity(0, 7);
+        hero.setSpeedX(horizontalForce);
+        if (controller.isUpPressed() && hero.getBody().getLinearVelocity().y == 0) {
+            hero.setSpeedY(7f);
         }
 
+        if (controller.isAttackPressed()) {
+            hero.shoot();
+        }
 
-        if(controller.isDownPressed())
-            hero.setLive(-3);
+        if(controller.isHomePresed())
+        {
+            pause();
+        }
     }
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height);
 
     }
 
     @Override
     public void pause() {
-
+        PAUSE = true;
     }
 
     @Override
     public void resume() {
-
+        PAUSE = false;
     }
 
     @Override
@@ -223,35 +229,22 @@ class GameScreen implements Screen, Interface {
 
     @Override
     public void dispose() {
-        rayHandler.dispose();
-        world.dispose();
+        TheBox.destroyWorld();
         b2dr.dispose();
-        batch.dispose();
         ui.dispose();
-        //textureGame.dispose();
         controller.dispose();
         tmr.dispose();
         map.dispose();
-    }
+        MenuPause.dispose();
+     }
 
-    public Body createwithJson()
-    {
-        BodyEditorLoader loader = new BodyEditorLoader(
-                Gdx.files.internal("jon/punkty.json"));
-
-        // 1. Create a BodyDef, as usual.
-        BodyDef bd = new BodyDef();
-        bd.position.set(0, 0);
-        bd.type = BodyDef.BodyType.DynamicBody;
-        bd.fixedRotation = true;
-
-        // 2. Create a FixtureDef, as usual.
-        FixtureDef fd = new FixtureDef();
-        fd.density = 1;
-        fd.friction = 0.5f;
-        fd.restitution = 0.3f;
-        Body body = world.createBody(bd);
-        loader.attachFixture(body, "Name", fd, 1.7f);
-        return body;
+    public void sweepDeadBodies() {
+        if (!TheBox.world.isLocked()) {
+            Iterator<GameObject> i = TheBox.getDeleteArrayIter();
+            while (i.hasNext()) {
+                i.next().destroy();
+                i.remove();
+            }
+        }
     }
 }

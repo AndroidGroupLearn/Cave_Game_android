@@ -1,0 +1,4 @@
+TODO LIST
+
+- Przerobić Credits screen, endscreen itp na klasy dziedziczące po jednym screenie i już (może maszyna stanów?)
+- Dodać wykrywanie kolizji dla potworków
