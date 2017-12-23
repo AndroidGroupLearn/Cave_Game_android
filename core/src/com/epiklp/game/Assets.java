@@ -39,6 +39,12 @@ public class Assets {
     public static final AssetDescriptor<Texture> continueButton = new AssetDescriptor<Texture>("MenuButtons/button_continue.png", Texture.class);
     public static final AssetDescriptor<Texture> creditButton = new AssetDescriptor<Texture>("MenuButtons/button_credit.png", Texture.class);
 
+    public static final AssetDescriptor<Texture> menulayer = new AssetDescriptor<Texture>("menu/all.png", Texture.class);
+    public static final AssetDescriptor<Texture> shoplayer = new AssetDescriptor<Texture>("menu/shop.png", Texture.class);
+    public static final AssetDescriptor<Texture> creditlayer = new AssetDescriptor<Texture>("menu/credit.png", Texture.class);
+    public static final AssetDescriptor<Texture> cave1layer = new AssetDescriptor<Texture>("menu/cave1.png", Texture.class);
+    public static final AssetDescriptor<Texture> cave2layer = new AssetDescriptor<Texture>("menu/cave2.png", Texture.class);
+
 
     public static void load() {
         manager.load(player);
@@ -53,6 +59,13 @@ public class Assets {
         manager.load(upButton);
         manager.load(attackButton);
         manager.load(homeButton);
+
+        manager.load(menulayer);
+        manager.load(shoplayer);
+        manager.load(creditlayer);
+        manager.load(cave1layer);
+        manager.load(cave2layer);
+
 
         manager.load(pauseWindow);
         manager.load(backButton);
