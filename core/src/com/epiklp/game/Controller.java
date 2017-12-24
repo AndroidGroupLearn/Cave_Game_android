@@ -18,19 +18,20 @@ public class Controller extends Stage {
     public Controller() {
         Table tabl = new Table();
         tabl.bottom().left();
-        Image imu = new Image(Assets.manager.get(Assets.upButton));
-        imu.setSize(BUTTON_SIZE, BUTTON_SIZE);
-        imu.addListener(new InputListener() {
+
+        Image imr = new Image(Assets.manager.get(Assets.rightButton));
+        imr.setSize(BUTTON_SIZE, BUTTON_SIZE);
+        imr.addListener(new InputListener() {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                upPressed = true;
+                rightPressed = true;
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                upPressed = false;
+                rightPressed = false;
             }
         });
 
@@ -49,26 +50,26 @@ public class Controller extends Stage {
                 leftPressed = false;
             }
         });
-        tabl.add(imu).size(iml.getWidth(), iml.getHeight());
-        tabl.row().padBottom(10);
         tabl.add(iml).size(iml.getWidth(), iml.getHeight());
+        tabl.add(imr).size(iml.getWidth(), iml.getHeight());
         addActor(tabl);
 
         tabr = new Table();
-        tabr.setPosition(Cave.WIDTH - (Cave.WIDTH / 10) / 2, (Cave.WIDTH / 10));
-        Image imr = new Image(Assets.manager.get(Assets.rightButton));
-        imr.setSize(BUTTON_SIZE, BUTTON_SIZE);
-        imr.addListener(new InputListener() {
+        tabr.setPosition(Gdx.graphics.getWidth()- 64, (Cave.WIDTH / 10));
+
+        Image imu = new Image(Assets.manager.get(Assets.upButton));
+        imu.setSize(BUTTON_SIZE, BUTTON_SIZE);
+        imu.addListener(new InputListener() {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                rightPressed = true;
+                upPressed = true;
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                rightPressed = false;
+                upPressed = false;
             }
         });
 
@@ -89,7 +90,7 @@ public class Controller extends Stage {
         });
         tabr.add(ime).size(iml.getWidth(), iml.getHeight());
         tabr.row().padBottom(10);
-        tabr.add(imr).size(iml.getWidth(), iml.getHeight());
+        tabr.add(imu).size(iml.getWidth(), iml.getHeight());
         addActor(tabr);
 
         Image HomeButton = new Image(Assets.manager.get(Assets.homeButton));

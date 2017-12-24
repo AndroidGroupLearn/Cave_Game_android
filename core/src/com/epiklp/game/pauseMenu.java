@@ -20,6 +20,7 @@ public class pauseMenu extends Stage {
     public pauseMenu()
     {
         pauseWindow = new Image(Assets.manager.get(Assets.pauseWindow));
+        pauseWindow.setScale(.8f);
         pressExit = pressRestart = presssResume = false;
         buttonExit = new Image(Assets.manager.get(Assets.quitButton));
         buttonExit.addListener(new InputListener(){

@@ -35,6 +35,10 @@ public class newMenu implements Screen {
     private Image cave1;
     private Image cave2;
 
+    private boolean pause = false;
+
+    private pauseMenu MenuPause;
+
     public newMenu(Cave cave)
     {
         this.cave = cave;
@@ -73,6 +77,8 @@ public class newMenu implements Screen {
         InputMultiplexer inputMultiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
         inputMultiplexer.addProcessor(controller);
         TheBox.createBox(0,50,Cave.WIDTH,10,true, (short)0, (short)0);
+
+        MenuPause = new pauseMenu();
     }
 
     @Override
@@ -84,10 +90,6 @@ public class newMenu implements Screen {
     {
         TheBox.world.step(1 / 60f, 6, 2);
         inputUpdate();
-        stage.getViewport().setCamera(camera);
-        Vector3 position = camera.position;
-        camera.position.set(position);
-        camera.update();
     }
 
     private void inputUpdate() {
@@ -120,16 +122,26 @@ public class newMenu implements Screen {
         if (controller.isAttackPressed()) {
             hero.shoot();
         }
+
+        if(controller.isHomePresed())
+        {
+            pause();
+        }
     }
 
     @Override
     public void render(float delta) {
-        update(Gdx.graphics.getDeltaTime());
-        TheBox.world.setContactListener(myContactListener);
+
         stage.act();
         stage.draw();
         controller.draw();
         b2dr.render(TheBox.world, camera.combined.scl(Cave.PPM));
+        if(pause == true)
+            MenuPause.draw();
+        else {
+            update(Gdx.graphics.getDeltaTime());
+            TheBox.world.setContactListener(myContactListener);
+        }
     }
 
     @Override
@@ -139,7 +151,7 @@ public class newMenu implements Screen {
 
     @Override
     public void pause() {
-
+        pause = true;
     }
 
     @Override
