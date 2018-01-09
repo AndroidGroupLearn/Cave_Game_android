@@ -17,7 +17,7 @@ public class Cave extends Game {
         //    while(!Assets.manager.update())
         //        System.out.println(Assets.manager.getProgress()*100 + "%");
         //this.setScreen(new Menu(this));
-        this.setScreen(new newMenu(this));
+        this.setScreen(new logo(this));
         //this.setScreen(new GameScreen(this));
     }
 

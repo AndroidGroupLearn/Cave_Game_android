@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -34,6 +35,7 @@ public class newMenu implements Screen {
     private Image credit;
     private Image cave1;
     private Image cave2;
+    private Body shopBody, creditBody, caveBody;
 
     private boolean pause = false;
 
@@ -49,8 +51,8 @@ public class newMenu implements Screen {
         shop.setSize(200,200);
         shop.setPosition(500,55);
         credit = new Image(Assets.manager.get(Assets.creditlayer));
-        credit.setSize(200,200);
-        credit.setPosition(150, 55);
+        credit.setSize(150,150);
+        credit.setPosition(180, 55);
         cave1 = new Image(Assets.manager.get(Assets.cave1layer));
         cave1.setSize(400,Cave.HEIGHT);
         cave1.setPosition(Cave.WIDTH-500, 55);
@@ -59,6 +61,7 @@ public class newMenu implements Screen {
         cave2.setPosition(Cave.WIDTH-500, 55);
 
         TheBox.initWorld();
+        //shopBody = new Body();
         b2dr = new Box2DDebugRenderer();
         camera = new OrthographicCamera(Cave.WIDTH, Cave.HEIGHT);
         viewport = new ExtendViewport(Cave.WIDTH / 1.2f , Cave.HEIGHT / 1.2f, camera);
