@@ -35,7 +35,7 @@ public class newMenu implements Screen {
     private Image credit;
     private Image cave1;
     private Image cave2;
-    private Body shopBody, creditBody, caveBody;
+    private Image enter;
 
     private boolean pause = false;
 
@@ -60,6 +60,9 @@ public class newMenu implements Screen {
         cave2.setSize(400,Cave.HEIGHT);
         cave2.setPosition(Cave.WIDTH-500, 55);
 
+        enter = new Image(Assets.manager.get(Assets.goButton));
+        enter.setSize(Cave.WIDTH / 10, Cave.WIDTH / 10);
+
         TheBox.initWorld();
         //shopBody = new Body();
         b2dr = new Box2DDebugRenderer();
@@ -77,6 +80,7 @@ public class newMenu implements Screen {
 
         stage.addActor(hero);
         stage.addActor(cave2);
+        stage.addActor(enter);
         InputMultiplexer inputMultiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
         inputMultiplexer.addProcessor(controller);
         TheBox.createBox(0,50,Cave.WIDTH,10,true, (short)0, (short)0);
@@ -93,6 +97,19 @@ public class newMenu implements Screen {
     {
         TheBox.world.step(1 / 60f, 6, 2);
         inputUpdate();
+        float x = hero.getBody().getPosition().x;
+        if(x > 180 && x < 330) // credits
+        {
+            enter.setPosition(180, Cave.HEIGHT/2);
+        }
+        if(x > 500 && x < 700)
+        {
+            enter.setPosition(500, Cave.HEIGHT/2);
+        }//shop
+        if(x > Cave.WIDTH-500)
+        {
+            enter.setPosition(Cave.WIDTH-500, Cave.HEIGHT/2);
+        }//map
     }
 
     private void inputUpdate() {

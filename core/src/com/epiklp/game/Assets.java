@@ -29,7 +29,7 @@ public class Assets {
     public static final AssetDescriptor<Texture> attackButton = new AssetDescriptor<Texture>("button/Attack.png", Texture.class);
     public static final AssetDescriptor<Texture> upButton = new AssetDescriptor<Texture>("button/Up.png", Texture.class);
     public static final AssetDescriptor<Texture> homeButton = new AssetDescriptor<Texture>("button/home2.png", Texture.class);
-
+    public static final AssetDescriptor<Texture> goButton = new AssetDescriptor<Texture>("button/go.png", Texture.class);
 
     public static final AssetDescriptor<Texture> pauseWindow = new AssetDescriptor<Texture>("PauseMenu/window.png", Texture.class);
     public static final AssetDescriptor<Texture> restartButton = new AssetDescriptor<Texture>("PauseMenu/button_restart.png", Texture.class);
@@ -47,10 +47,13 @@ public class Assets {
     public static final AssetDescriptor<Texture> cave1layer = new AssetDescriptor<Texture>("menu/cave1.png", Texture.class);
     public static final AssetDescriptor<Texture> cave2layer = new AssetDescriptor<Texture>("menu/cave2.png", Texture.class);
 
+    public static final AssetDescriptor<Texture> menumap = new AssetDescriptor<Texture>("Map/menu_map.png", Texture.class);
+
 
     public static void load() {
 
         manager.load(logo);
+        manager.load(menumap);
 
         manager.load(player);
         manager.load(flameDemon);
@@ -64,6 +67,7 @@ public class Assets {
         manager.load(upButton);
         manager.load(attackButton);
         manager.load(homeButton);
+        manager.load(goButton);
 
         manager.load(menulayer);
         manager.load(shoplayer);

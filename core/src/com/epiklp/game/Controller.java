@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 
 public class Controller extends Stage {
-    private static final float BUTTON_SIZE = Cave.WIDTH / 10;
+    private final float BUTTON_SIZE = Cave.WIDTH / 10;
     private boolean upPressed, atackPressed, leftPressed, rightPressed, homePresed;
     private Table tabr;
 
