@@ -1,4 +1,4 @@
-package com.epiklp.game;
+package com.epiklp.game.Game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -15,6 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.epiklp.game.Cave;
+import com.epiklp.game.Functional.Controller;
+import com.epiklp.game.Functional.MyContactListener;
+import com.epiklp.game.Functional.TheBox;
+import com.epiklp.game.Functional.TiledObject;
+import com.epiklp.game.Functional.UI;
 import com.epiklp.game.actors.characters.Enemy;
 import com.epiklp.game.actors.characters.FlameDemon;
 import com.epiklp.game.actors.GameObject;

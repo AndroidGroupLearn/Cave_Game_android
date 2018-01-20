@@ -1,6 +1,8 @@
 package com.epiklp.game;
 
 import com.badlogic.gdx.Game;
+import com.epiklp.game.Functional.Assets;
+import com.epiklp.game.Game.Logo;
 
 
 public class Cave extends Game {

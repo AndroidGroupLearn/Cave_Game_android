@@ -1,9 +1,11 @@
-package com.epiklp.game;
+package com.epiklp.game.Game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.epiklp.game.Cave;
+import com.epiklp.game.Functional.Assets;
 
 /**
  * Created by epiklp on 08.01.18.
@@ -37,7 +39,7 @@ public class Logo implements Screen {
         if(time > 5)
         {
             dispose();
-            cave.setScreen(new NewMenu(cave));
+            cave.setScreen(new Menu(cave));
         }
     }
 

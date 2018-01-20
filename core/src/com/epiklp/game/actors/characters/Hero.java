@@ -2,9 +2,9 @@ package com.epiklp.game.actors.characters;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.epiklp.game.Assets;
+import com.epiklp.game.Functional.Assets;
 import com.epiklp.game.Cave;
-import com.epiklp.game.TheBox;
+import com.epiklp.game.Functional.TheBox;
 import com.epiklp.game.actors.weapons.FireBall;
 import com.epiklp.game.actors.weapons.Shootable;
 

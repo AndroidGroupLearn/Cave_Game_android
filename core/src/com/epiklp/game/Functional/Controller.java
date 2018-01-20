@@ -1,13 +1,13 @@
-package com.epiklp.game;
+package com.epiklp.game.Functional;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.epiklp.game.Cave;
+import com.epiklp.game.Functional.Assets;
 
 
 public class Controller extends Stage {

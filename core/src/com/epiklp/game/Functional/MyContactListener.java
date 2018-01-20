@@ -1,4 +1,4 @@
-package com.epiklp.game;
+package com.epiklp.game.Functional;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;

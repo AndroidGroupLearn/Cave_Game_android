@@ -2,12 +2,10 @@ package com.epiklp.game.actors.weapons;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.epiklp.game.Assets;
+import com.epiklp.game.Functional.Assets;
 import com.epiklp.game.Cave;
-import com.epiklp.game.TheBox;
+import com.epiklp.game.Functional.TheBox;
 import com.epiklp.game.actors.characters.GameCharacter;
-
-import box2dLight.PointLight;
 
 /**
  * Created by epiklp on 29.11.17.

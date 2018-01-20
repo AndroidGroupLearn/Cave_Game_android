@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.epiklp.game.Cave;
-import com.epiklp.game.TheBox;
+import com.epiklp.game.Functional.TheBox;
 
 import box2dLight.Light;
 

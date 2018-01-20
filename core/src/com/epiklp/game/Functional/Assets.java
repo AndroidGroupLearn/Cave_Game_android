@@ -1,4 +1,4 @@
-package com.epiklp.game;
+package com.epiklp.game.Functional;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;

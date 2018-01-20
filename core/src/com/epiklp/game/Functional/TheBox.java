@@ -1,6 +1,5 @@
-package com.epiklp.game;
+package com.epiklp.game.Functional;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.epiklp.game.Cave;
 import com.epiklp.game.actors.GameObject;
 
 import java.util.Iterator;
@@ -66,7 +66,7 @@ public class TheBox {
         return pBody;
     }
 
-    
+
     public static void createBoxSensor(Body body, float width, float height, Vector2 shiftFromCenter){
 
         PolygonShape shape = new PolygonShape();
