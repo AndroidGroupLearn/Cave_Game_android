@@ -3,11 +3,7 @@ package com.epiklp.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -16,7 +12,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -62,7 +57,7 @@ class GameScreen implements Screen {
     private Array<Body> mapBodies;
 
     private MyContactListener myContactListener;
-    private pauseMenu MenuPause;
+    private PauseMenu MenuPause;
 
     public GameScreen(Cave cave) {
         PAUSE = false;
@@ -72,7 +67,7 @@ class GameScreen implements Screen {
         viewport = new ExtendViewport(Cave.WIDTH / 1.5f , Cave.HEIGHT / 1.5f, camera);
         stage = new Stage(viewport);
         myContactListener = new MyContactListener();
-        controller = new Controller();
+        controller = new Controller(true);
         Gdx.input.setInputProcessor(new InputMultiplexer());
         ui = new UI();
 
@@ -86,7 +81,7 @@ class GameScreen implements Screen {
         tmr = new OrthogonalTiledMapRenderer(map, 2f);
 
         mapBodies = TiledObject.parseTiledObjectLayer(TheBox.world, map.getLayers().get("collision").getObjects());
-        MenuPause = new pauseMenu();
+        MenuPause = new PauseMenu();
 
         InputMultiplexer inputMultiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
         inputMultiplexer.addProcessor(MenuPause);

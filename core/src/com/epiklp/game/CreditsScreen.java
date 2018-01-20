@@ -28,7 +28,7 @@ class CreditsScreen implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         bitmapFont = new BitmapFont();
-        labelStyle = new Label.LabelStyle(Assets.character, Color.WHITE);
+        labelStyle = new Label.LabelStyle(Assets.Font, Color.WHITE);
         text = new Label("Autorzy:\n Rafal Rybowski\n Kamil Sykula", labelStyle);
         text.setPosition(0, Cave.HEIGHT / 2);
         stage.addActor(text);

@@ -66,26 +66,7 @@ public class TheBox {
         return pBody;
     }
 
-
-    public static Body createwithJson() {
-        BodyEditorLoader loader = new BodyEditorLoader(
-                Gdx.files.internal("jon/punkty.json"));
-
-        // 1. Create a BodyDef, as usual.
-        BodyDef bd = new BodyDef();
-        bd.position.set(0, 0);
-        bd.type = BodyDef.BodyType.DynamicBody;
-        bd.fixedRotation = true;
-
-        // 2. Create a FixtureDef, as usual.
-        FixtureDef fd = new FixtureDef();
-        fd.density = 1;
-        fd.friction = 0.5f;
-        fd.restitution = 0.3f;
-        Body body = world.createBody(bd);
-        loader.attachFixture(body, "Name", fd, 1.7f);
-        return body;
-    }
+    
     public static void createBoxSensor(Body body, float width, float height, Vector2 shiftFromCenter){
 
         PolygonShape shape = new PolygonShape();

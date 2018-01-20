@@ -13,89 +13,95 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 public class Controller extends Stage {
     private final float BUTTON_SIZE = Cave.WIDTH / 10;
     private boolean upPressed, atackPressed, leftPressed, rightPressed, homePresed;
-    private Table tabr;
+    private Table tabRight, tabLeft;
+    private Image buttonRight, buttonLeft, buttonUp, buttonAttack, buttonHome;
 
-    public Controller() {
-        Table tabl = new Table();
-        tabl.bottom().left();
+    public Controller(boolean atack) {
+        //Buttons on Left
+        /*******************************************/
+        tabLeft = new Table();
+        tabLeft.bottom().left();
 
-        Image imr = new Image(Assets.manager.get(Assets.rightButton));
-        imr.setSize(BUTTON_SIZE, BUTTON_SIZE);
-        imr.addListener(new InputListener() {
-
+        buttonRight = new Image(Assets.manager.get(Assets.rightButton));
+        buttonRight.setSize(BUTTON_SIZE, BUTTON_SIZE);
+        buttonRight.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 rightPressed = true;
                 return true;
             }
-
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 rightPressed = false;
             }
         });
 
-        Image iml = new Image(Assets.manager.get(Assets.leftButton));
-        iml.setSize(BUTTON_SIZE, BUTTON_SIZE);
-        iml.addListener(new InputListener() {
-
+        buttonLeft = new Image(Assets.manager.get(Assets.leftButton));
+        buttonLeft.setSize(BUTTON_SIZE, BUTTON_SIZE);
+        buttonLeft.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 leftPressed = true;
                 return true;
             }
-
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 leftPressed = false;
             }
         });
-        tabl.add(iml).size(iml.getWidth(), iml.getHeight());
-        tabl.add(imr).size(iml.getWidth(), iml.getHeight());
-        addActor(tabl);
+        tabLeft.add(buttonLeft).size(buttonLeft.getWidth(), buttonLeft.getHeight());
+        tabLeft.add(buttonRight).size(buttonRight.getWidth(), buttonRight.getHeight());
+        addActor(tabLeft);
+        /*******************************************/
 
-        tabr = new Table();
-        tabr.setPosition(Gdx.graphics.getWidth()- 64, (Cave.WIDTH / 10));
+        //Buttons on Right
+        /*******************************************/
+        tabRight = new Table();
+        if(atack == true)
+            tabRight.setPosition(Gdx.graphics.getWidth()- 64, (Cave.WIDTH / 10));
+        else
+            tabRight.setPosition(Gdx.graphics.getWidth()- 64, buttonLeft.getHeight()/2);
 
-        Image imu = new Image(Assets.manager.get(Assets.upButton));
-        imu.setSize(BUTTON_SIZE, BUTTON_SIZE);
-        imu.addListener(new InputListener() {
-
+        buttonUp = new Image(Assets.manager.get(Assets.upButton));
+        buttonUp.setSize(BUTTON_SIZE, BUTTON_SIZE);
+        buttonUp.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 upPressed = true;
                 return true;
             }
-
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 upPressed = false;
             }
         });
+        if(atack == true) {
+            buttonAttack = new Image(Assets.manager.get(Assets.attackButton));
+            buttonAttack.setSize(BUTTON_SIZE, BUTTON_SIZE);
+            buttonAttack.addListener(new InputListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    atackPressed = true;
+                    return true;
+                }
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    atackPressed = false;
+                }
+            });
+            tabRight.add(buttonAttack).size(buttonAttack.getWidth(), buttonAttack.getHeight());
+            tabRight.row().padBottom(10);
+        }
+        tabRight.add(buttonUp).size(buttonUp.getWidth(), buttonUp.getHeight());
+        addActor(tabRight);
+        /*******************************************/
 
-        Image ime = new Image(Assets.manager.get(Assets.attackButton));
-        ime.setSize(BUTTON_SIZE, BUTTON_SIZE);
-        ime.addListener(new InputListener() {
 
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                atackPressed = true;
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                atackPressed = false;
-            }
-        });
-        tabr.add(ime).size(iml.getWidth(), iml.getHeight());
-        tabr.row().padBottom(10);
-        tabr.add(imu).size(iml.getWidth(), iml.getHeight());
-        addActor(tabr);
-
-        Image HomeButton = new Image(Assets.manager.get(Assets.homeButton));
-        HomeButton.setPosition(Gdx.graphics.getWidth() - 74, Gdx.graphics.getHeight()-74);
-        HomeButton.addListener(new InputListener(){
+        //Pause/Menu
+        /*******************************************/
+        buttonHome = new Image(Assets.manager.get(Assets.homeButton));
+        buttonHome.setPosition(Gdx.graphics.getWidth() - 74, Gdx.graphics.getHeight()-74);
+        buttonHome.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 homePresed = true;
@@ -107,7 +113,8 @@ public class Controller extends Stage {
                 homePresed = false;
             }
         });
-        addActor(HomeButton);
+        addActor(buttonHome);
+        /*******************************************/
     }
 
 
